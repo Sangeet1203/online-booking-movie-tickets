@@ -1,0 +1,66 @@
+ # Online Movie Ticket Booking System
+
+# Available movies and their showtimes
+movies = {
+    "Movie 1": ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM", "10:00 PM"],
+    "Movie 2": ["11:00 AM", "2:00 PM", "5:00 PM", "8:00 PM"],
+    "Movie 3": ["12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]
+}
+
+# User details
+user_name = "John Doe"
+
+# Booking details
+booking_details = {}
+
+def display_movies():
+    print("Available Movies:")
+    for i, movie in enumerate(movies.keys(), 1):
+        print(f"{i}. {movie}")
+
+def book_ticket():
+    global booking_details
+    movie_choice = int(input("Enter the movie number: ")) - 1
+    movie_name = list(movies.keys())[movie_choice]
+    print(f"Showtimes for {movie_name}:")
+    for i, showtime in enumerate(movies[movie_name], 1):
+        print(f"{i}. {showtime}")
+    showtime_choice = int(input("Enter the showtime number: ")) - 1
+    showtime = movies[movie_name][showtime_choice]
+    booking_details = {
+        "Movie": movie_name,
+        "Showtime": showtime
+    }
+    print("Ticket booked successfully!")
+
+def view_booking():
+    global booking_details
+    if booking_details:
+        print(f"Booking Details for {user_name}:")
+        print(f"Movie: {booking_details['Movie']}")
+        print(f"Showtime: {booking_details['Showtime']}")
+    else:
+        print("No booking found.")
+
+def main():
+    while True:
+        print("\nOnline Movie Ticket Booking System")
+        print("1. Display Movies")
+        print("2. Book Ticket")
+        print("3. View Booking")
+        print("4. Exit")
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            display_movies()
+        elif choice == 2:
+            book_ticket()
+        elif choice == 3:
+            view_booking()
+        elif choice == 4:
+            print("Thank you for using our online movie ticket booking system!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()

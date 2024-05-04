@@ -1,0 +1,54 @@
+# Movie Ticket Booking System
+
+class Movie:
+    def __init__(self, title, showtime, seats):
+        self.title = title
+        self.showtime = showtime
+        self.seats = seats
+        self.booked_seats = []
+
+    def book_seat(self, name, seat_number):
+        if seat_number in self.seats and seat_number not in self.booked_seats:
+            self.booked_seats.append(seat_number)
+            print(f"Seat {seat_number} booked for {name} for {self.title} at {self.showtime}")
+        else:
+            print("Seat not available. Please try again.")
+
+    def display_seats(self):
+        print(f"Available seats for {self.title} at {self.showtime}: {', '.join(str(seat) for seat in self.seats if seat not in self.booked_seats)}")
+
+class BookingSystem:
+    def __init__(self):
+        self.movies = []
+
+    def add_movie(self, movie):
+        self.movies.append(movie)
+
+    def book_ticket(self, name, movie_title, seat_number):
+        for movie in self.movies:
+            if movie.title == movie_title:
+                movie.book_seat(name, seat_number)
+                return
+        print("Movie not found. Please try again.")
+
+    def display_movies(self):
+        for movie in self.movies:
+            print(f"{movie.title} at {movie.showtime}")
+            movie.display_seats()
+            print()
+
+# Example usage
+booking_system = BookingSystem()
+
+movie1 = Movie("Avengers", "3:00 PM", [1, 2, 3, 4, 5])
+movie2 = Movie("The Lion King", "6:00 PM", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+booking_system.add_movie(movie1)
+booking_system.add_movie(movie2)
+
+booking_system.display_movies()
+
+# John Doe books a ticket
+booking_system.book_ticket("John Doe", "Avengers", 2)
+
+booking_system.display_movies()
