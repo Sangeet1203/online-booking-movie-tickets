@@ -1,0 +1,93 @@
+Database Design:
+
+Tables:
+
+1. Users
+
+CREATE TABLE Users (
+  User_ID INT PRIMARY KEY,
+  Username VARCHAR(50) NOT NULL,
+  Email VARCHAR(100) NOT NULL,
+  Password VARCHAR(255) NOT NULL
+);
+
+2. Movies
+
+CREATE TABLE Movies (
+  Movie_ID INT PRIMARY KEY,
+  Title VARCHAR(100) NOT NULL,
+  Description TEXT,
+  Release_Date DATE,
+  Duration INT
+);
+
+3. Showtime
+
+CREATE TABLE Showtimes (
+  Showtime_ID INT PRIMARY KEY,
+  Movie_ID INT NOT NULL,
+  Showtime DATETIME NOT NULL,
+  Theatre_ID INT NOT NULL,
+  FOREIGN KEY (Movie_ID) REFERENCES Movies(Movie_ID),
+  FOREIGN KEY (Theatre_ID) REFERENCES Theatres(Theatre_ID)
+);
+
+4. Theatres
+
+CREATE TABLE Theatres (
+  Theatre_ID INT PRIMARY KEY,
+  Name VARCHAR(100) NOT NULL,
+  Address VARCHAR(200) NOT NULL,
+  Capacity INT NOT NULL
+);
+
+
+5. Bookings
+
+CREATE TABLE Bookings (
+  Booking_ID INT PRIMARY KEY,
+  User_ID INT NOT NULL,
+  Showtime_ID INT NOT NULL,
+  Seat_Number INT NOT NULL,
+  Booking_Date DATETIME NOT NULL,
+  FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+  FOREIGN KEY (Showtime_ID) REFERENCES Showtimes(Showtime_ID)
+);
+
+
+Python Connection:
+
+import mysql.connector
+
+# Database connection settings
+username = 'your_username'
+password = 'your_password'
+host = 'your_host'
+database = 'your_database'
+
+# Establish a connection to the database
+cnx = mysql.connector.connect(
+    user=username,
+    password=password,
+    host=host,
+    database=database
+)
+
+# Create a cursor object to execute queries
+cursor = cnx.cursor()
+
+# Example query to retrieve all bookings for a user
+query = "SELECT * FROM Bookings WHERE User_ID = %s"
+user_id = 1
+cursor.execute(query, (user_id,))
+
+# Fetch all the rows
+bookings = cursor.fetchall()
+
+# Print the bookings
+for booking in bookings:
+    print(booking)
+
+# Close the cursor and connection
+cursor.close()
+cnx.close()
